@@ -1,0 +1,379 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Light theme is the day level, dark theme the night level. */
+:root {
+  --sky-1: #6ec3ff;
+  --sky-2: #93d4ff;
+  --sky-3: #bfe6ff;
+  --horizon: #d9f1ff;
+  --panel: #fffdf7;
+  --panel-2: #efe9ff;
+  --ink: #24123d;
+  --muted: #5d4a78;
+  --edge: #24123d;
+  --shadow: #24123d;
+  --accent: #b4234f;
+  --on-accent: #ffffff;
+  --coin: #ffc531;
+  --coin-dark: #c98a00;
+  --mint: #1f9e7a;
+  --grass: #5fbf4a;
+  --grass-dark: #3a8a31;
+  --mountain: #7a8fd6;
+  --mountain-2: #9fb0ea;
+  --grid-line: rgba(180, 35, 79, 0.55);
+  --star: transparent;
+  --cloud: #ffffff;
+  --sun: #ffc531;
+  /* One pop colour per section, for chips, card headers and badges. */
+  --pop-pink: #ff6fa8;
+  --pop-mint: #3fd8a8;
+  --pop-blue: #4aa8ff;
+  --pop-yellow: #ffcf3a;
+  --pop-purple: #9b6dff;
+  --pop-orange: #ff8a3d;
+  --on-pop: #24123d;
+}
+
+.dark {
+  --sky-1: #0b0620;
+  --sky-2: #140b35;
+  --sky-3: #22124f;
+  --horizon: #3a1a6b;
+  --panel: #1d1340;
+  --panel-2: #2a1c57;
+  --ink: #f6f1ff;
+  --muted: #bcaedd;
+  --edge: #05030f;
+  --shadow: #05030f;
+  --accent: #ff5c8a;
+  --on-accent: #1a0b24;
+  --coin: #ffd54a;
+  --coin-dark: #b98a12;
+  --mint: #42e6b5;
+  --grass: #2a7a52;
+  --grass-dark: #1b5238;
+  --mountain: #2c1f66;
+  --mountain-2: #3b2a80;
+  --grid-line: rgba(255, 92, 138, 0.7);
+  --star: #fff6c9;
+  --cloud: rgba(188, 174, 221, 0.18);
+  --sun: #fff1b8;
+  --pop-pink: #ff7eb6;
+  --pop-mint: #4ff0bd;
+  --pop-blue: #6cbcff;
+  --pop-yellow: #ffd95e;
+  --pop-purple: #b48cff;
+  --pop-orange: #ffa15e;
+  --on-pop: #1a0b24;
+}
+
+@theme inline {
+  --font-pixel: var(--font-pixelify), ui-monospace, monospace;
+  --font-hud: var(--font-vt323), ui-monospace, monospace;
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+
+  --color-sky-1: var(--sky-1);
+  --color-sky-2: var(--sky-2);
+  --color-sky-3: var(--sky-3);
+  --color-horizon: var(--horizon);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-edge: var(--edge);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-coin: var(--coin);
+  --color-coin-dark: var(--coin-dark);
+  --color-mint: var(--mint);
+  --color-grass: var(--grass);
+  --color-grass-dark: var(--grass-dark);
+  --color-pop-pink: var(--pop-pink);
+  --color-pop-mint: var(--pop-mint);
+  --color-pop-blue: var(--pop-blue);
+  --color-pop-yellow: var(--pop-yellow);
+  --color-pop-purple: var(--pop-purple);
+  --color-pop-orange: var(--pop-orange);
+  --color-on-pop: var(--on-pop);
+
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-blink: blink 1s step-end infinite;
+  --animate-bob: bob 1.2s steps(2, end) infinite;
+  --animate-drift: drift var(--drift, 60s) linear infinite;
+  --animate-twinkle: twinkle 2.4s steps(3, end) infinite;
+  --animate-flicker: flicker 0.45s steps(3, end) infinite;
+  --animate-spin-y: spin-y 1.6s steps(8, end) infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  /* Opacity only, so it stays on the compositor. */
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+  @keyframes drift {
+    from {
+      transform: translateX(-30vw);
+    }
+    to {
+      transform: translateX(130vw);
+    }
+  }
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.25;
+    }
+  }
+  @keyframes flicker {
+    0% {
+      transform: scaleY(1);
+    }
+    50% {
+      transform: scaleY(1.12) translateY(-1px);
+    }
+    100% {
+      transform: scaleY(0.94);
+    }
+  }
+  @keyframes toast-in {
+    from {
+      transform: translateX(120%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes coin-pop {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-24px);
+      opacity: 0;
+    }
+  }
+  @keyframes spin-y {
+    0% {
+      transform: scaleX(1);
+    }
+    25% {
+      transform: scaleX(0.3);
+    }
+    50% {
+      transform: scaleX(-1);
+    }
+    75% {
+      transform: scaleX(0.3);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    /* HUD height: h-16 plus its 4px bottom border. */
+    scroll-padding-top: 4.25rem;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    background: var(--sky-3);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 3px dashed var(--accent);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--coin);
+    color: #24123d;
+  }
+}
+
+@layer components {
+  /* Chunky pixel border: four offset shadows leave the corners notched. */
+  .pixel-box {
+    background: var(--panel);
+    box-shadow:
+      0 -4px 0 0 var(--edge),
+      0 4px 0 0 var(--edge),
+      -4px 0 0 0 var(--edge),
+      4px 0 0 0 var(--edge),
+      8px 8px 0 0 var(--shadow);
+  }
+  .pixel-box-flat {
+    box-shadow:
+      0 -4px 0 0 var(--edge),
+      0 4px 0 0 var(--edge),
+      -4px 0 0 0 var(--edge),
+      4px 0 0 0 var(--edge);
+  }
+  /* Pixelify Sans draws fi/fl/ff ligatures as a single wrong glyph. */
+  .font-pixel,
+  .pixel-btn {
+    font-variant-ligatures: none;
+  }
+  .pixel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-pixel);
+    box-shadow:
+      0 -3px 0 0 var(--edge),
+      0 3px 0 0 var(--edge),
+      -3px 0 0 0 var(--edge),
+      3px 0 0 0 var(--edge),
+      5px 5px 0 0 var(--shadow);
+    transition:
+      transform 80ms steps(2),
+      box-shadow 80ms steps(2);
+  }
+  .pixel-btn:hover {
+    transform: translate(-1px, -1px);
+  }
+  .pixel-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow:
+      0 -3px 0 0 var(--edge),
+      0 3px 0 0 var(--edge),
+      -3px 0 0 0 var(--edge),
+      3px 0 0 0 var(--edge);
+  }
+  .pixelated {
+    image-rendering: pixelated;
+    shape-rendering: crispEdges;
+  }
+  .text-3d {
+    text-shadow:
+      3px 3px 0 var(--accent),
+      6px 6px 0 var(--edge);
+  }
+  .text-3d-sm {
+    text-shadow:
+      2px 2px 0 var(--accent),
+      4px 4px 0 var(--edge);
+  }
+  /* Checkered grass strip for the camp scene and the footer. */
+  .pixel-ground {
+    background-color: var(--grass);
+    background-image:
+      linear-gradient(
+        45deg,
+        var(--grass-dark) 25%,
+        transparent 25%,
+        transparent 75%,
+        var(--grass-dark) 75%
+      ),
+      linear-gradient(
+        45deg,
+        var(--grass-dark) 25%,
+        transparent 25%,
+        transparent 75%,
+        var(--grass-dark) 75%
+      );
+    background-size: 16px 16px;
+    background-position:
+      0 0,
+      8px 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .animate-bob,
+  .animate-drift,
+  .animate-twinkle,
+  .animate-flicker,
+  .animate-spin-y,
+  .animate-blink {
+    animation: none !important;
+  }
+}
+
+/* GameProvider sets data-offscreen on sections that are out of view. */
+[data-offscreen] *,
+[data-offscreen] *::before,
+[data-offscreen] *::after {
+  animation-play-state: paused !important;
+}
+
+/* HUD pause button. One-shot entrances are paused by MotionConfig. */
+:root[data-motion-paused]
+  :is(
+    .animate-marquee,
+    .animate-bob,
+    .animate-drift,
+    .animate-twinkle,
+    .animate-flicker,
+    .animate-spin-y,
+    .animate-blink,
+    .save-glow,
+    .sr-wave-a,
+    .sr-wave-b,
+    [data-retro-grid-scroll]
+  ) {
+  animation: none !important;
+}
+:root[data-motion-paused] :is(.save-spark, .sr-wave-b) {
+  display: none !important;
+}
+
+/* Sections that were never scrolled into view still sit at their opacity 0 start pose.
+   Effects that should end hidden carry data-fx. */
+@media print {
+  :where(main, footer)
+    :is([style*='opacity:0'], [style*='opacity: 0']):not([data-fx], [data-fx] *) {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  /* Print the full profile dialog, same as the noscript fallback. */
+  [data-nojs-hide] {
+    display: none !important;
+  }
+  [data-nojs-show] {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    clip-path: none !important;
+    white-space: normal !important;
+    display: grid !important;
+    gap: 1rem;
+    padding: 1.5rem !important;
+  }
+}
