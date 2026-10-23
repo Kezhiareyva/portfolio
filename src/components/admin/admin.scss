@@ -1,0 +1,701 @@
+// Welcome and BuiltWith dashboard blocks. Tokens are scoped to .kz-dash so they stay out of Payload's UI.
+// Payload's root font size is 13px (12px under 1024px), so rem values are relative to that.
+
+.kz-dash {
+  --kz-text: #24123d;
+  --kz-muted: #5d4a78;
+  --kz-panel: #fffdf7;
+  --kz-panel-2: #efe9ff;
+  --kz-edge: #24123d;
+  --kz-shadow: #24123d;
+  --kz-line: #cdc1e6;
+  --kz-accent: #b4234f;
+  --kz-on-accent: #ffffff;
+  --kz-gold: #ffc531;
+  --kz-on-gold: #24123d;
+  --kz-invert-bg: #24123d;
+  --kz-invert-fg: #fffdf7;
+  --kz-pixel: var(--kz-font-pixel, 'Pixelify Sans'), ui-monospace, monospace;
+  --kz-hud: var(--kz-font-hud, 'VT323'), ui-monospace, monospace;
+  --kz-gap: calc(var(--base) * 0.75);
+
+  color: var(--kz-text);
+  font-family: var(--font-body);
+
+  &,
+  & *,
+  & *::before,
+  & *::after {
+    box-sizing: border-box;
+  }
+}
+
+html[data-theme='dark'] .kz-dash {
+  --kz-text: #f6f1ff;
+  --kz-muted: #bcaedd;
+  --kz-panel: #1d1340;
+  --kz-panel-2: #2a1c57;
+  // Same as --kz-frame in custom.scss; shadows stay near-black.
+  --kz-edge: #43337a;
+  --kz-shadow: #05030f;
+  --kz-line: #43337a;
+  --kz-accent: #ff5c8a;
+  --kz-on-accent: #1a0b24;
+  --kz-gold: #ffd54a;
+  --kz-on-gold: #1a0b24;
+  --kz-invert-bg: #2a1c57;
+  --kz-invert-fg: #f6f1ff;
+}
+
+.kz-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.kz-pixel-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.kz-external-icon {
+  flex: none;
+  width: 0.85em;
+  height: 0.85em;
+}
+
+@mixin kz-pressable($shadow: 3px) {
+  transition:
+    transform 80ms steps(2),
+    box-shadow 80ms steps(2),
+    background-color 80ms steps(2),
+    color 80ms steps(2),
+    border-color 80ms steps(2);
+
+  &:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: ($shadow + 2px) ($shadow + 2px) 0 var(--kz-shadow);
+  }
+
+  &:active {
+    transform: translate($shadow, $shadow);
+    box-shadow: 0 0 0 var(--kz-shadow);
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--kz-accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+/* ---------- Welcome panel (beforeDashboard) ---------- */
+
+// 6px matches the inline padding on Payload's dashboard widgets.
+.kz-welcome {
+  container: kz-welcome / inline-size;
+  margin: calc(var(--base) * 1.5) 6px calc(var(--base) * 2);
+}
+
+.kz-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: calc(var(--base) * 1.25) calc(var(--base) * 2);
+  padding: calc(var(--base) * 1.6) calc(var(--base) * 1.6) calc(var(--base) * 1.4);
+  background: var(--kz-panel);
+  border: 3px solid var(--kz-edge);
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 var(--kz-shadow);
+
+  &__tag {
+    position: absolute;
+    top: 0;
+    left: calc(var(--base) * 1.2);
+    transform: translateY(-55%);
+    padding: 0.3rem 0.7rem 0.15rem;
+    font-family: var(--kz-hud);
+    font-size: 1.55rem;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    color: var(--kz-on-accent);
+    background: var(--kz-accent);
+    border: 3px solid var(--kz-edge);
+    border-radius: 3px;
+  }
+
+  &__main {
+    min-width: 0;
+  }
+
+  &__kicker {
+    margin: 0 0 0.5rem;
+    font-family: var(--kz-hud);
+    font-size: 1.6rem;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--kz-muted);
+  }
+
+  &__cursor {
+    animation: kz-blink 1.1s steps(1) 4;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: var(--kz-pixel);
+    font-variant-ligatures: none;
+    font-weight: 500;
+    font-size: clamp(2.3rem, 3.4vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    color: var(--kz-text);
+  }
+
+  &__name {
+    text-decoration: underline;
+    text-decoration-color: var(--kz-gold);
+    text-decoration-thickness: 0.16em;
+    text-underline-offset: 0.14em;
+    text-decoration-skip-ink: none;
+  }
+
+  &__lead {
+    max-width: 48ch;
+    margin: 0.85rem 0 0;
+    font-size: 1.2rem;
+    line-height: 1.55;
+    color: var(--kz-muted);
+  }
+
+  &__site {
+    margin-top: calc(var(--base) * 1.1);
+  }
+
+  &__site-label {
+    display: block;
+    margin-bottom: 0.55rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--kz-muted);
+  }
+
+  &__site-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  &__caret {
+    position: absolute;
+    right: calc(var(--base) * 0.6);
+    bottom: calc(var(--base) * 0.45);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 7px solid var(--kz-accent);
+    animation: kz-blink 1.1s steps(1) 4;
+  }
+}
+
+.kz-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.9rem;
+  padding: 0.45rem 0.9rem 0.45rem 0.45rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--kz-text);
+  text-decoration: none;
+  background: var(--kz-panel-2);
+  border: 2px solid var(--kz-edge);
+  border-radius: 3px;
+  box-shadow: 3px 3px 0 var(--kz-shadow);
+  @include kz-pressable(3px);
+
+  &__code {
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.1rem;
+    padding: 0.15rem 0.3rem 0;
+    font-family: var(--kz-hud);
+    font-size: 1.35rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--kz-invert-fg);
+    background: var(--kz-invert-bg);
+    border-radius: 2px;
+  }
+
+  &:hover {
+    color: var(--kz-on-accent);
+    background: var(--kz-accent);
+  }
+}
+
+html[data-theme='dark'] .kz-btn__code {
+  color: var(--kz-text);
+  background: var(--kz-shadow);
+}
+
+.kz-stats {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kz-stat {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 0.95rem 0.7rem 0.7rem;
+  color: var(--kz-text);
+  text-decoration: none;
+  background: var(--kz-panel-2);
+  border: 2px solid var(--kz-edge);
+  border-radius: 3px;
+  box-shadow: 3px 3px 0 var(--kz-shadow);
+  @include kz-pressable(3px);
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    padding: 0.55rem;
+    color: var(--kz-accent);
+    background: var(--kz-panel);
+    border: 2px solid var(--kz-edge);
+    border-radius: 2px;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  &__label {
+    font-size: 1.2rem;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+
+  &__meta {
+    margin-top: 0.1rem;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    color: var(--kz-muted);
+  }
+
+  &__num {
+    font-family: var(--kz-hud);
+    font-size: 3.2rem;
+    line-height: 0.8;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ---------- Sections: quick actions + tips ---------- */
+
+.kz-section {
+  margin-top: calc(var(--base) * 1.75);
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0 0 0.95rem;
+    font-family: var(--kz-pixel);
+    font-variant-ligatures: none;
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 1.2;
+    color: var(--kz-text);
+
+    // Same pixel bullet as .collections__label in custom.scss.
+    &::before {
+      content: '';
+      flex: none;
+      width: 8px;
+      height: 8px;
+      background: var(--kz-accent);
+      box-shadow: 2px 2px 0 var(--kz-shadow);
+    }
+  }
+}
+
+.kz-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.95rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kz-action {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  height: 100%;
+  padding: 0.95rem 1rem 1rem;
+  color: var(--kz-text);
+  text-decoration: none;
+  background: var(--kz-panel);
+  border: 2px solid var(--kz-edge);
+  border-radius: 3px;
+  box-shadow: 3px 3px 0 var(--kz-shadow);
+  @include kz-pressable(3px);
+
+  &__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 3.3rem;
+    height: 3.3rem;
+    padding: 0.6rem;
+    color: var(--kz-accent);
+    background: var(--kz-panel-2);
+    border: 2px solid var(--kz-edge);
+    border-radius: 2px;
+    transition:
+      color 80ms steps(2),
+      background-color 80ms steps(2);
+  }
+
+  &:hover &__icon {
+    color: var(--kz-on-accent);
+    background: var(--kz-accent);
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+    padding-right: 3.4rem;
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+
+  &__desc {
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--kz-muted);
+  }
+
+  &__verb {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.65rem;
+    padding: 0.15rem 0.35rem 0;
+    font-family: var(--kz-hud);
+    font-size: 1.15rem;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    border: 2px solid var(--kz-edge);
+    border-radius: 2px;
+
+    &--new {
+      color: var(--kz-on-gold);
+      background: var(--kz-gold);
+    }
+
+    &--edit {
+      color: var(--kz-text);
+      background: var(--kz-panel-2);
+    }
+  }
+}
+
+.kz-tips {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.95rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kz-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.95rem 1rem;
+  background: var(--kz-panel-2);
+  border: 2px solid var(--kz-line);
+  border-radius: 3px;
+
+  &__num {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.3rem;
+    height: 2.3rem;
+    padding-top: 0.15rem;
+    font-family: var(--kz-hud);
+    font-size: 1.7rem;
+    line-height: 1;
+    color: var(--kz-panel);
+    background: var(--kz-text);
+    border-radius: 2px;
+  }
+
+  &__text {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.55;
+
+    strong {
+      font-weight: 800;
+    }
+  }
+
+  &__link {
+    font-weight: 800;
+    color: var(--kz-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+
+    &::after {
+      content: ' →';
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--kz-accent);
+      outline-offset: 2px;
+    }
+  }
+
+  // Missing-CV tip.
+  &--warn {
+    border-color: var(--kz-gold);
+    box-shadow: inset 0 0 0 1px var(--kz-gold);
+
+    .kz-tip__num {
+      color: var(--kz-on-gold);
+      background: var(--kz-gold);
+    }
+  }
+}
+
+/* ---------- Built with (afterDashboard) ---------- */
+
+.kz-built {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: calc(var(--base) * 0.6) calc(var(--base) * 1.5);
+  // Same 6px inline inset as .kz-welcome.
+  margin: calc(var(--base) * 2.25) 6px calc(var(--base) * 2);
+  padding-top: calc(var(--base) * 1.25);
+  border-top: 2px dashed var(--kz-line);
+
+  &__title {
+    margin: 0;
+    font-family: var(--kz-pixel);
+    font-variant-ligatures: none;
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 1.2;
+    color: var(--kz-text);
+  }
+
+  &__sub {
+    margin: 0.2rem 0 0;
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--kz-muted);
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+    min-height: 2.9rem;
+    padding: 0.45rem 0.85rem 0.45rem 0.65rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--kz-muted);
+    text-decoration: none;
+    border: 2px solid var(--kz-line);
+    border-radius: 3px;
+    transition:
+      transform 80ms steps(2),
+      box-shadow 80ms steps(2),
+      background-color 80ms steps(2),
+      color 80ms steps(2),
+      border-color 80ms steps(2);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--kz-invert-fg);
+      background: var(--kz-invert-bg);
+      border-color: var(--kz-edge);
+      box-shadow: 3px 3px 0 var(--kz-accent);
+      transform: translate(-1px, -1px);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--kz-accent);
+      outline-offset: 3px;
+    }
+
+    &:active {
+      opacity: 1;
+      transform: translate(2px, 2px);
+      box-shadow: 0 0 0 var(--kz-accent);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+
+      &:hover,
+      &:focus-visible,
+      &:active {
+        transform: none;
+      }
+    }
+  }
+
+  &__logo {
+    flex: none;
+    width: 1.6rem;
+    height: 1.6rem;
+    transition: color 80ms steps(2);
+  }
+
+  // Black marks (data-mono) keep the text colour so they show on the dark chip.
+  &__link:hover &__logo,
+  &__link:focus-visible &__logo {
+    color: var(--kz-brand, currentColor);
+  }
+
+  &__link[data-mono]:hover &__logo,
+  &__link[data-mono]:focus-visible &__logo {
+    color: currentColor;
+  }
+}
+
+// Used with 4 iterations so nothing blinks for longer than 5s.
+@keyframes kz-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kz-hero__cursor,
+  .kz-hero__caret {
+    animation: none;
+  }
+}
+
+/* ---------- Layout by available width ---------- */
+
+// Container queries, since the content width changes when the side nav opens or closes.
+@container kz-welcome (min-width: 560px) {
+  .kz-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container kz-welcome (min-width: 700px) {
+  .kz-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@container kz-welcome (min-width: 780px) {
+  .kz-actions,
+  .kz-tips {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@container kz-welcome (min-width: 920px) {
+  .kz-hero {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+
+  .kz-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@container kz-welcome (max-width: 559px) {
+  .kz-hero {
+    padding: calc(var(--base) * 1.4) calc(var(--base) * 0.85) calc(var(--base) * 1.2);
+    box-shadow: 4px 4px 0 var(--kz-shadow);
+
+    &__tag {
+      left: calc(var(--base) * 0.7);
+      font-size: 1.4rem;
+    }
+  }
+}
+
+@container kz-welcome (max-width: 420px) {
+  .kz-hero__site-links {
+    flex-direction: column;
+  }
+
+  .kz-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .kz-welcome {
+    margin-top: calc(var(--base) * 1.25);
+  }
+
+  .kz-built__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

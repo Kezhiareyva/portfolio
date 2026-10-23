@@ -1,0 +1,775 @@
+// Admin theme. Not in a cascade layer, so it beats Payload's `@layer payload-default` styles.
+// Payload state rules (hover, disabled, error) for any property set here have to be restated.
+
+$mid-break: 1024px;
+$small-break: 768px;
+$xs-break: 400px;
+
+// ---------------------------------------------------------------------------------------------------
+// 1. Brand tokens (same names as the dashboard components use)
+// ---------------------------------------------------------------------------------------------------
+
+:root,
+html[data-theme='light'] {
+  --kz-text: #24123d;
+  --kz-muted: #5d4a78;
+  --kz-bg: #fffdf7;
+  --kz-panel: #fffdf7;
+  --kz-panel-2: #efe9ff;
+  --kz-edge: #24123d;
+  --kz-shadow: #24123d;
+  --kz-frame: #24123d;
+  --kz-line: #cdc1e6;
+  --kz-accent: #b4234f;
+  --kz-accent-hover: #951c42;
+  --kz-on-accent: #ffffff;
+  --kz-gold: #ffc531;
+  --kz-on-gold: #24123d;
+  --kz-mint: #1f9e7a;
+  --kz-backdrop: #efe9ff;
+
+  --kz-pixel: var(--kz-font-pixel, 'Pixelify Sans'), ui-monospace, monospace;
+}
+
+html[data-theme='dark'] {
+  --kz-text: #f6f1ff;
+  --kz-muted: #bcaedd;
+  --kz-bg: #140b35;
+  --kz-panel: #1d1340;
+  --kz-panel-2: #2a1c57;
+  --kz-edge: #05030f;
+  --kz-shadow: #05030f;
+  --kz-frame: #43337a;
+  --kz-line: #43337a;
+  --kz-accent: #ff5c8a;
+  --kz-accent-hover: #ff7ea3;
+  --kz-on-accent: #1a0b24;
+  --kz-gold: #ffd54a;
+  --kz-on-gold: #1a0b24;
+  --kz-mint: #42e6b5;
+  --kz-backdrop: #140b35;
+}
+
+// ---------------------------------------------------------------------------------------------------
+// 2. Payload theme variables
+// ---------------------------------------------------------------------------------------------------
+
+:root {
+  // Nunito comes from next/font (see components/admin/Icon.tsx); the plain name is a fallback.
+  --font-body:
+    var(--kz-font-body, 'Nunito'), system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --style-radius-s: 2px;
+  --style-radius-m: 3px;
+  --style-radius-l: 4px;
+
+  --accessibility-outline: 2px solid var(--kz-accent);
+  --accessibility-outline-offset: 2px;
+
+  // Payload maps these to --theme-success-* (reversed in dark mode).
+  --color-success-50: #e8fdf4;
+  --color-success-100: #d4faea;
+  --color-success-150: #bef7e0;
+  --color-success-200: #a6f1d3;
+  --color-success-250: #8bebc7;
+  --color-success-300: #6be3b9;
+  --color-success-350: #44d7a9;
+  --color-success-400: #1dc799;
+  --color-success-450: #26b38a;
+  --color-success-500: #1f9e7a;
+  --color-success-550: #168c6b;
+  --color-success-600: #137b5e;
+  --color-success-650: #136c52;
+  --color-success-700: #125e47;
+  --color-success-750: #13513e;
+  --color-success-800: #104534;
+  --color-success-850: #0c392b;
+  --color-success-900: #092e22;
+  --color-success-950: #052319;
+}
+
+// Light neutrals, cream to ink. 400 and up are dark enough for text.
+:root,
+html[data-theme='light'] {
+  --theme-elevation-0: #fffdf7;
+  --theme-elevation-50: #f7f4fd;
+  --theme-elevation-100: #f0eafd;
+  --theme-elevation-150: #e6def7;
+  --theme-elevation-200: #d9d0ed;
+  --theme-elevation-250: #cbc1e1;
+  --theme-elevation-300: #bcb1d3;
+  --theme-elevation-350: #a89cc1;
+  --theme-elevation-400: #766793;
+  --theme-elevation-450: #6a5987;
+  --theme-elevation-500: #5d4a78;
+  --theme-elevation-550: #51406e;
+  --theme-elevation-600: #493766;
+  --theme-elevation-650: #41305e;
+  --theme-elevation-700: #392855;
+  --theme-elevation-750: #32204d;
+  --theme-elevation-800: #24123d;
+  --theme-elevation-850: #1b0c30;
+  --theme-elevation-900: #140725;
+  --theme-elevation-950: #0d041a;
+  --theme-elevation-1000: #060210;
+
+  --theme-overlay: rgba(36, 18, 61, 0.45);
+}
+
+// Dark neutrals, indigo to lavender white. 400 and up are light enough for text.
+html[data-theme='dark'] {
+  --theme-elevation-0: #140b35;
+  --theme-elevation-50: #1d1340;
+  --theme-elevation-100: #2a1c57;
+  --theme-elevation-150: #392863;
+  --theme-elevation-200: #43346c;
+  --theme-elevation-250: #4e3f76;
+  --theme-elevation-300: #584b80;
+  --theme-elevation-350: #665a8c;
+  --theme-elevation-400: #968bbe;
+  --theme-elevation-450: #a096c7;
+  --theme-elevation-500: #ada3d3;
+  --theme-elevation-550: #bcaedd;
+  --theme-elevation-600: #c2bae5;
+  --theme-elevation-650: #ccc5e9;
+  --theme-elevation-700: #d5cff0;
+  --theme-elevation-750: #ddd8f5;
+  --theme-elevation-800: #e5e1fa;
+  --theme-elevation-850: #ece8fe;
+  --theme-elevation-900: #f1edff;
+  --theme-elevation-950: #f3f0ff;
+  --theme-elevation-1000: #f6f1ff;
+
+  --theme-overlay: rgba(5, 3, 15, 0.75);
+}
+
+// ---------------------------------------------------------------------------------------------------
+// 3. Type
+// ---------------------------------------------------------------------------------------------------
+
+h1,
+h2,
+h3 {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+h4,
+h5,
+h6 {
+  font-weight: 700;
+}
+
+// ---------------------------------------------------------------------------------------------------
+// 4. Brand mark (graphics.Icon in the header, graphics.Logo on login/logout)
+// ---------------------------------------------------------------------------------------------------
+
+.kz-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--theme-text);
+  line-height: 1;
+  white-space: nowrap;
+
+  &__badge {
+    display: block;
+    flex: none;
+  }
+
+  &__text {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__word {
+    display: inline-block;
+    font-family: var(--kz-pixel);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  &__tld {
+    display: inline;
+    color: var(--kz-accent);
+  }
+
+  &__tag {
+    display: inline-block;
+    padding: 3px 4px 2px;
+    border: 2px solid var(--kz-edge);
+    border-radius: 2px;
+    background: var(--kz-gold);
+    color: var(--kz-on-gold);
+    font-family: var(--font-body);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1;
+  }
+
+  &__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__sub {
+    color: var(--theme-elevation-500);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+}
+
+// Header icon: 13 grid units x 2px keeps every pixel crisp.
+.kz-brand--icon {
+  .kz-brand__badge {
+    width: 26px;
+    height: 26px;
+  }
+
+  .kz-brand__word {
+    font-size: 17px;
+  }
+}
+
+// Login logo: 13 grid units x 4px.
+.kz-brand--logo {
+  gap: 14px;
+
+  .kz-brand__badge {
+    width: 52px;
+    height: 52px;
+  }
+
+  .kz-brand__text {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .kz-brand__word {
+    font-size: 30px;
+    line-height: 1;
+  }
+}
+
+// The breadcrumb home link is an 18px box and step-nav forces `display: block` on every child.
+.step-nav__home {
+  width: auto;
+  height: auto;
+  flex-shrink: 0;
+
+  > span {
+    display: flex;
+    max-width: none;
+    overflow: visible;
+  }
+
+  span.kz-brand,
+  span.kz-brand__text,
+  span.kz-brand__meta {
+    display: inline-flex;
+    max-width: none;
+    overflow: visible;
+  }
+
+  span.kz-brand__word,
+  span.kz-brand__tag {
+    display: inline-block;
+    max-width: none;
+    overflow: visible;
+  }
+
+  span.kz-brand__tld {
+    display: inline;
+  }
+
+  .kz-brand__badge {
+    transition: transform 80ms steps(2);
+  }
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: none;
+
+    .kz-brand__badge {
+      transform: translate(-1px, -1px);
+    }
+
+    .kz-brand__word {
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+    }
+  }
+}
+
+// Let the breadcrumbs shrink and scroll so a long title can't push the header controls off-screen.
+// The padding/negative-margin pair leaves room for the badge hover nudge and the underline.
+.app-header__step-nav-wrapper {
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-block: -3px;
+  margin-inline-start: -2px;
+  padding-block: 3px;
+  padding-inline-start: 2px;
+}
+
+// Keep crumbs on one line; only the last one (the doc title) shrinks and gets an ellipsis.
+.app-header__step-nav-wrapper .step-nav {
+  min-width: 0;
+}
+
+.app-header__step-nav-wrapper .step-nav > * {
+  flex-shrink: 0;
+}
+
+.app-header__step-nav-wrapper .step-nav > .step-nav__last:not(:has(.dashboard-breadcrumb-select)) {
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+.dashboard-breadcrumb-select .rs__control {
+  flex-wrap: nowrap;
+}
+
+// Keeps the wide locale button off the avatar.
+@media (max-width: $small-break) {
+  .app-header__localizer.localizer,
+  .app-header__localizer-spacing {
+    margin-inline-end: 8px;
+  }
+}
+
+// !important beats the .step-nav__home span overrides above.
+@media (max-width: $mid-break) {
+  .kz-brand--icon .kz-brand__text {
+    display: none !important;
+  }
+}
+
+@media (max-width: $xs-break) {
+  .kz-brand--logo {
+    gap: 10px;
+
+    .kz-brand__badge {
+      width: 39px;
+      height: 39px;
+    }
+
+    .kz-brand__word {
+      font-size: 24px;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------
+// 5. Login, logout, forgot/reset password (minimal template)
+// ---------------------------------------------------------------------------------------------------
+
+.template-minimal {
+  background-color: var(--kz-backdrop);
+}
+
+.template-minimal__wrap {
+  position: relative;
+  padding: calc(var(--base) * 1.6);
+  border: 3px solid var(--kz-frame);
+  border-radius: var(--style-radius-l);
+  background: var(--kz-panel);
+  box-shadow: 6px 6px 0 var(--kz-shadow);
+
+  @media (max-width: $small-break) {
+    padding: var(--base);
+    box-shadow: 4px 4px 0 var(--kz-shadow);
+  }
+}
+
+.login__brand {
+  justify-content: flex-start;
+  margin-bottom: var(--base);
+}
+
+.kz-login-hello {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 calc(var(--base) * 1.2);
+  padding-top: calc(var(--base) * 0.8);
+  border-top: 2px dashed var(--theme-elevation-200);
+  color: var(--theme-elevation-500);
+  font-size: 14px;
+  line-height: 1.5;
+
+  &__dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    background: var(--kz-mint);
+    box-shadow: 2px 2px 0 var(--kz-edge);
+    transform: translateY(-1px);
+  }
+}
+
+.login__form {
+  > a {
+    color: var(--kz-accent);
+    font-weight: 700;
+  }
+
+  .form-submit .btn {
+    width: 100%;
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------
+// 6. Buttons
+// ---------------------------------------------------------------------------------------------------
+
+.btn--style-primary {
+  --btn-font-weight: 700;
+  --color: var(--kz-on-accent);
+  --bg-color: var(--kz-accent);
+  --hover-bg: var(--kz-accent-hover);
+  --hover-color: var(--kz-on-accent);
+  --btn-border: 2px solid var(--kz-edge);
+
+  &.btn--disabled {
+    --color: var(--theme-elevation-450);
+    --bg-color: var(--theme-elevation-150);
+    --hover-bg: var(--theme-elevation-150);
+    --hover-color: var(--theme-elevation-450);
+    --btn-border: 2px solid var(--theme-elevation-200);
+  }
+}
+
+// Split "with popup" buttons stay flat.
+.btn--style-primary:not(.btn--withPopup .btn):not(.btn--disabled) {
+  box-shadow: 2px 2px 0 var(--kz-shadow);
+  transition:
+    transform 80ms steps(2),
+    box-shadow 80ms steps(2),
+    background-color 80ms steps(2),
+    color 80ms steps(2);
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--kz-shadow);
+  }
+}
+
+// "Create New" is the main action of a list page, so it gets the primary look too.
+.btn.list-create-new-doc__create-new-button {
+  --btn-font-weight: 700;
+  --color: var(--kz-on-accent);
+  --bg-color: var(--kz-accent);
+  --hover-bg: var(--kz-accent-hover);
+  --hover-color: var(--kz-on-accent);
+  --btn-border: 2px solid var(--kz-edge);
+  box-shadow: 2px 2px 0 var(--kz-shadow);
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+}
+
+.btn--withPopup .popup-button {
+  border-width: 2px;
+}
+
+.btn--style-secondary {
+  --btn-font-weight: 700;
+  --color: var(--theme-text);
+  --bg-color: transparent;
+  --btn-border: 2px solid var(--theme-elevation-800);
+  --hover-color: var(--kz-accent);
+  --hover-bg: transparent;
+  --hover-btn-border: 2px solid var(--kz-accent);
+
+  &.btn--disabled {
+    --color: var(--theme-elevation-300);
+    --btn-border: 2px solid var(--theme-elevation-200);
+    --hover-btn-border: 2px solid var(--theme-elevation-200);
+    --hover-color: var(--theme-elevation-300);
+  }
+}
+
+// Pills: Bulk Upload, Columns/Filters and the upload field buttons.
+.btn--style-pill {
+  --btn-font-weight: 700;
+  --btn-border: 2px solid var(--theme-elevation-200);
+  --hover-btn-border: 2px solid var(--theme-elevation-400);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn--style-primary:not(.btn--withPopup .btn):active,
+  .btn.list-create-new-doc__create-new-button:active,
+  .card--has-onclick:hover,
+  .card--has-onclick:focus-within,
+  .step-nav__home:hover .kz-brand__badge {
+    transform: none !important;
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------
+// 7. Nav (sidebar)
+// ---------------------------------------------------------------------------------------------------
+
+.nav {
+  background: var(--theme-elevation-50);
+  border-right: 2px solid var(--theme-elevation-150);
+
+  [dir='rtl'] & {
+    border-right: none;
+    border-left: 2px solid var(--theme-elevation-150);
+  }
+}
+
+.nav-group__toggle {
+  color: var(--theme-elevation-400);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.nav__link {
+  border-radius: var(--style-radius-s);
+}
+
+.nav a.nav__link:hover,
+.nav a.nav__link:focus-visible {
+  color: var(--kz-accent);
+}
+
+.nav__link:has(.nav__link-indicator) {
+  color: var(--kz-accent);
+}
+
+.nav__link-indicator {
+  width: 4px;
+  height: 18px;
+  border-radius: 0;
+  background: var(--kz-accent);
+}
+
+// ---------------------------------------------------------------------------------------------------
+// 8. Header: locale switcher (EN = accent outline, ID = gold fill, so the editing language is obvious)
+// ---------------------------------------------------------------------------------------------------
+
+.localizer-button {
+  padding-block: 1px;
+  border: 2px solid var(--kz-accent);
+  border-radius: var(--style-radius-s);
+  background-color: var(--theme-elevation-0);
+
+  &__label {
+    color: var(--theme-elevation-500);
+  }
+
+  &__current,
+  button {
+    color: var(--kz-accent);
+    font-weight: 800;
+  }
+
+  &[data-locale='id'] {
+    border-color: var(--kz-edge);
+    background-color: var(--kz-gold);
+
+    .localizer-button__label,
+    .localizer-button__current,
+    button {
+      color: var(--kz-on-gold);
+    }
+  }
+}
+
+// Popup menus (locale list, doc menu, Columns/Filters) get the same frame as .card.
+.popup__content {
+  border: 2px solid var(--kz-line);
+  border-radius: var(--style-radius-m);
+  box-shadow: 3px 3px 0 var(--kz-line);
+}
+
+.popup__caret {
+  display: none;
+}
+
+// Payload renders the current locale as disabled; style it as selected.
+.popup-button-list__button--selected.popup-button-list__disabled {
+  color: var(--kz-accent);
+  font-weight: 800;
+}
+
+// ---------------------------------------------------------------------------------------------------
+// 9. Dashboard cards (collections / globals)
+// ---------------------------------------------------------------------------------------------------
+
+.collections__label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+
+  &::before {
+    content: '';
+    flex: none;
+    width: 8px;
+    height: 8px;
+    background: var(--kz-accent);
+    box-shadow: 2px 2px 0 var(--kz-shadow);
+  }
+}
+
+.card {
+  border: 2px solid var(--kz-line);
+  border-radius: var(--style-radius-m);
+  background: var(--kz-panel);
+  box-shadow: 3px 3px 0 var(--kz-line);
+  transition:
+    transform 80ms steps(2),
+    box-shadow 80ms steps(2),
+    border-color 80ms steps(2);
+
+  &__title {
+    font-size: 14px;
+    font-weight: 800;
+  }
+}
+
+.card--has-onclick:hover,
+.card--has-onclick:focus-within {
+  border-color: var(--theme-elevation-800);
+  background: var(--kz-panel);
+  box-shadow: 4px 4px 0 var(--kz-accent);
+  transform: translate(-2px, -2px);
+}
+
+// ---------------------------------------------------------------------------------------------------
+// 10. Edit view: title, tabs, inputs, checkboxes
+// ---------------------------------------------------------------------------------------------------
+
+.doc-header::after {
+  height: 2px;
+  background: var(--theme-elevation-150);
+}
+
+// Payload's 50% opacity on inactive tabs is too faint to read.
+.tabs-field__tab-button {
+  font-weight: 700;
+  opacity: 1;
+  color: var(--theme-elevation-450);
+
+  &:hover {
+    opacity: 1;
+    color: var(--theme-text);
+  }
+
+  &::after {
+    background: var(--kz-accent);
+  }
+}
+
+.tabs-field__tab-button--active {
+  color: var(--theme-text);
+}
+
+// Restated so the unlayered rules above don't override Payload's error state.
+html[data-theme='light'] .tabs-field__tab-button--has-error {
+  color: var(--theme-error-750);
+}
+
+html[data-theme='dark'] .tabs-field__tab-button--has-error {
+  color: var(--theme-error-500);
+}
+
+.tabs-field__tab-button--has-error::after {
+  background: var(--theme-error-500);
+}
+
+.tabs-field__tab-button--active::after {
+  height: 3px;
+}
+
+// :not(.error) leaves Payload's error styling alone.
+.field-type:not(.error) {
+  &.text:not(.has-many) input,
+  &.textarea textarea,
+  &.email input,
+  &.number:not(.has-many) input,
+  &.password input,
+  &.confirm-password input,
+  .date-time-picker .react-datepicker__input-container input,
+  .react-select .rs__control {
+    border-color: var(--theme-elevation-200);
+
+    &:not(:disabled):hover {
+      border-color: var(--theme-elevation-350);
+    }
+
+    &:focus,
+    &:focus-within {
+      border-color: var(--kz-accent);
+      box-shadow: 0 0 0 1px var(--kz-accent);
+    }
+  }
+}
+
+.checkbox-input--checked .checkbox-input__input {
+  border-color: var(--kz-accent);
+  background: var(--kz-accent);
+  color: var(--kz-on-accent);
+}
+
+.field-label {
+  font-weight: 700;
+}
+
+// error-500 is too light for text on the cream background.
+html[data-theme='light'] .field-label .required {
+  color: var(--theme-error-600);
+}
+
+// Payload caps chips at 150px, which truncates longer skill names.
+.multi-value-label {
+  max-width: 260px;
+}
+
+// Payload stacks row fields below $mid-break and drops the gap between them.
+// Rows set --spacing-field to 0, so the spacing is written out here.
+@media (max-width: $mid-break) {
+  .field-type.row .row__fields > .field-type + .field-type {
+    margin-top: var(--base);
+  }
+}
+
+@media (max-width: $small-break) {
+  .field-type.row .row__fields > .field-type + .field-type {
+    margin-top: calc(var(--base) / 2);
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------
+// 11. List view cells (components/admin/ListCells.tsx)
+// ---------------------------------------------------------------------------------------------------
+
+.kz-cell-flag {
+  display: inline-block;
+  padding: 1px 6px;
+  border: 2px solid var(--kz-mint);
+  border-radius: 2px;
+  color: var(--theme-text);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.kz-cell-empty {
+  color: var(--theme-elevation-400);
+}
